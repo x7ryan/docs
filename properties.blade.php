@@ -1,6 +1,7 @@
 * [Introduction](#introduction) { .text-blue-800 }
   * [Important Notes](#important-notes) { .font-normal.text-sm.text-blue-800 }
 * [Initializing Properties](#initializing-properties) { .text-blue-800 }
+* [Readonly Properties](#readonly-properties) { .text-blue-800 }
 * [Data Binding](#data-binding) { .text-blue-800 }
   * [Binding Nested Data](#binding-nested-data) { .font-normal.text-sm.text-blue-800 }
   * [Debouncing Input](#debouncing-input) { .font-normal.text-sm.text-blue-800 }
@@ -104,6 +105,25 @@ public function resetFilters()
 }
 @endslot
 @endcomponent
+
+## Readonly Properties {#readonly-properties}
+
+Occasionally you may find you want to use one or more properties to store some state between requets that the client should not be able to update. Normally a user could intenetionally send an Update request to your server with a request to change a property. Without anything to explictly stop this the server would accept the request and change the property value. 
+
+You can now define an array of one or more properties that should be considered readonly to the client. By setting this protected property Livewire will automatically block any request by the client to update this property.
+
+@component('components.code-component')
+@slot('class')
+class HelloWorld extends Component
+{
+    protected $readOnly = ['foo'];
+    public $foo = 'Bar';
+    public $bar = 'Baz';
+}
+@endslot
+@endcomponent
+
+In this example any request from the client to set the value of `$foo` would fail, but the client could still update the value of `$bar`. You can of course still edit `$foo` in your backend php using `$this->foo = 'Something Else';` 
 
 ## Data Binding {#data-binding}
 If you've used front-end frameworks like Vue, or Angular, you are already familiar with this concept. However, if you are new to this concept, Livewire can "bind" (or "synchronize") the current value of some HTML element with a specific property in your component.
